@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Details</title>
+    <link rel="stylesheet" href="../css/server.css">
+    <link rel="stylesheet" href="../css/embedBuilder.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="navbar-left">
+            <button class="button invite-button">Invite Bot</button>
+        </div>
+        <div class="navbar-right">
+            <p id="navbar-username">Loading...</p>
+            <img src="" alt="User Avatar" id="navbar-avatar">
+            <button class="button logout-button">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li class="active" data-section="prefix-section">Prefix Setting</li>
+                <li data-section="welcome-section">Welcome Setting</li>
+                <li data-section="embed-builder-section">Embed Builder</li>
+            </ul>
+        </div>
+        <div class="content">
+
+            <div class="server-info">
+                <img src="" alt="Server Icon" id="server-icon">
+                <p id="server-name">Server Name</p>
+            </div>
+            <div id="prefix-section" class="section">
+                <h2>Prefix Setting</h2>
+                <label for="prefix-input">Prefix:</label>
+                <input type="text" id="prefix-input" value="?">
+                <button id="save-button">Save</button>
+            </div>
+            <div id="welcome-section" class="section" style="display: none;">
+                <h2>Welcome Setting</h2>
+                <!-- Welcome Settings Content Goes Here -->
+            </div>
+
+            <!-- Embed Builder -->
+             <div id="embed-builder-section" class="section" style="display: none;"></div>
+             <h2>Discord Embed Builder</h2>
+             <label for="webhookUrl">Webhook URL:</label>
+             <input type="text" id="webhookUrl" class="webhook-input" placeholder="Enter Webhook URL">
+
+             <div class="builder">
+                <div class="inputs">
+                    <label>Title:</label>
+                    <input type="text" id="embedTitle" placeholder="Embed Title">
+
+                    <label>Description:</label>
+                    <textarea id="embedDescription" placeholder="Embed Description"></textarea>
+
+                    <label>Color:</label>
+                    <input type="color" id="embedColor" value="#0099ff">
+
+                    <label>Thumbnail URL:</label>
+                    <input type="text" id="embedThumbnail" placeholder="Thumbnail URL">
+
+                    <label>Image URL:</label>
+                    <input type="text" id="embedImage" placeholder="Image URL">
+
+                    <label>Footer Text:</label>
+                    <input type="text" id="embedFooterText" placeholder="Footer Text">
+
+                    <label>Footer Icon URL:</label>
+                    <input type="text" id="embedFooterIcon" placeholder="Footer Icon URL">
+
+                    <label>Author Name</label>
+                    <input type="text" id="embedAuthorName" placeholder="Author Name">
+
+                    <label>Author Icon URL</label>
+                    <input type="text" id="embedAuthorIcon" placeholder="Author Icon URL">
+
+                    <label>Field Name:</label>
+                    <input type="text" id="fieldName" placeholder="Field Name">
+
+                    <label>Field Value:</label>
+                    <textarea id="fieldValue" placeholder="Field Value"></textarea>
+
+                    <button id="addField">Add Field</button>
+                </div>
+
+                <div class="preview">
+                    <div id="embedPreview" class="embed">
+                        <div id="embedAuthor">
+                            <img class="embed-author-icon" id="embedAuthorIconPreview">
+                            <span id="embedAuthorNamePreview" class="embed-author-name"></span>
+                        </div>
+                        <div id="embedThumbnailPreview" class="embed-thumbnail"></div>
+                        <div id="embedTitlePreview" class="embed-title"></div>
+                        <div id="embedDescriptionPreview" class="embed-description"></div>
+                        <div id="embedFieldsPreview" class="embed-fields"></div>
+                        <div id="embedImagePreview" class="embed-image"></div>
+                        <div id="embedFooter">
+                            <img id="embedFooterIconPreview" class="embed-footer-icon">
+                            <span id="embedFooterTextPreview" class="embed-footer-text"></span>
+                        </div>
+
+                    </div>
+                </div>
+
+             </div>
+             <button id="sendButton" class="send-button">Send</button>
+             <!-- Embed Builder -->
+            
+
+        </div>
+    </div>
+    <script>
+        window.onload = async () => {
+            const params = new URLSearchParams(window.location.search);
+            const serverName = params.get('name');
+            const serverIcon = params.get('icon');
+            const guildId = params.get('guildId');
+
+            if (!guildId) {
+                alert('Guild ID is missing in the url parameters');
+                return;
+            }
+
+            const userResponse = await fetch('/api/user-info');
+
+            const userInfo = await userResponse.json();
+
+            const { username, avatar, guilds } = userInfo;
+
+            document.getElementById('navbar-username').innerText = username;
+            if (avatar) {
+                document.getElementById('navbar-avatar').src = avatar;
+            }
+
+            document.getElementById('server-name').innerText = serverName;
+            document.getElementById('server-icon').src = serverIcon;
+
+            try {
+                const response = await fetch(`/api/get-prefix?guildId=${guildId}`);
+                const data = await response.json();
+                const currentPrefix = data.prefix || '?';
+                document.getElementById('prefix-input').value = currentPrefix;
+            } catch (error) {
+                console.error('Error fetching prefix', error);
+            }
+
+            document.getElementById('save-button').addEventListener('click', async () => {
+                const newPrefix = document.getElementById('prefix-input').value;
+                try {
+
+                    const response = await fetch(`/api/set-prefix`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ guildId, prefix: newPrefix }),
+                    });
+
+                    if (response.ok) {
+                        alert('Prefix Updated Successfully');
+                    } else {
+                        alert('Failed to update prefix');
+                    }
+
+                } catch (error) {
+                    console.error('Error Saving Prefix', error);
+                    alert('An error occured');
+                }
+
+
+            });
+
+
+            document.querySelectorAll('.sidebar ul li').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.sidebar ul li').forEach(li => li.classList.remove('active'));
+                    item.classList.add('active');
+
+                    const sectionId = item.getAttribute('data-section');
+                    document.querySelectorAll('.section').forEach(section => {
+                        section.style.display = section.id === sectionId ? 'block' : 'none';
+                    });
+                });
+            });
+
+            document.querySelector('.sidebar ul li').click();
+
+
+            // Embed Builder
+
+            document.getElementById('embedTitle').addEventListener('input', updatePreview);
+            document.getElementById('embedDescription').addEventListener('input',  updatePreview);
+            document.getElementById('embedColor').addEventListener('input', updateColor);
+            document.getElementById('embedThumbnail').addEventListener('input', updateThumbnail);
+            document.getElementById('embedImage').addEventListener('input', updateImage);
+            document.getElementById('embedFooterText').addEventListener('input', updateFooter);
+            document.getElementById('embedFooterIcon').addEventListener('input', updateFooterIcon);
+            document.getElementById('embedAuthorName').addEventListener('input', updateAuthor);
+            document.getElementById('embedAuthorIcon').addEventListener('input', updateAuthorIcon);
+            document.getElementById('addField').addEventListener('click', addField);
+
+
+            function updatePreview() {
+                document.getElementById('embedTitlePreview').textContent = document.getElementById('embedTitle').value;
+
+                document.getElementById('embedDescriptionPreview').textContent = document.getElementById('embedDescription').value;
+            }
+
+            function updateColor() {
+                document.getElementById('embedPreview').style.borderLeftColor = document.getElementById('embedColor').value;
+            }
+
+            function updateThumbnail() {
+                const url = document.getElementById('embedThumbnail').value;
+                document.getElementById('embedThumbnailPreview').style.backgroundImage = `url(${url})`;
+            }
+
+            function updateImage() {
+                const url = document.getElementById('embedImage').value;
+                document.getElementById('embedImagePreview').style.backgroundImage = `url(${url})`;
+            }
+
+            function updateFooter() {
+                document.getElementById('embedFooterTextPreview').textContent = document.getElementById('embedFooterText').value;
+            }
+
+            function updateFooterIcon() {
+                const url = document.getElementById('embedFooterIcon').value;
+                document.getElementById('embedFooterIconPreview').src = url;
+            }
+
+
+            function updateAuthor() {
+                document.getElementById('embedAuthorNamePreview').textContent = document.getElementById('embedAuthorName').value;
+            }
+
+            function updateAuthorIcon() {
+                const url = document.getElementById('embedAuthorIcon').value;
+                document.getElementById('embedAuthorIconPreview').src = url;
+            }
+
+            function addField() {
+                const fieldName = document.getElementById('fieldName').value;
+                const fieldValue = document.getElementById('fieldValue').value;
+
+                if (!fieldName || !fieldValue) {
+                    alert('Field Name and value are required.');
+                    return;
+                }
+
+
+                const fieldContainer = document.createElement('div');
+                fieldContainer.classList.add('embed-field');
+
+                const fieldNameElement = document.createElement('div');
+                fieldNameElement.classList.add('embed-field-title');
+                fieldNameElement.textContent = fieldName;
+
+                const fieldValueElement = document.createElement('div');
+                fieldValueElement.classList.add('embed-field-value');
+                fieldValueElement.textContent = fieldValue;
+
+
+                fieldContainer.appendChild(fieldNameElement);
+                fieldContainer.appendChild(fieldValueElement);
+
+                document.getElementById('embedFieldsPreview').appendChild(fieldContainer);
+
+                //Clear Input Fields
+                document.getElementById('fieldName').value = '';
+                document.getElementById('fieldValue').value = '';
+            }
+        }
+
+
+        document.getElementById('sendButton').addEventListener('click', async () => {
+            const webhookUrl = document.getElementById('webhookUrl').value;
+            const title = document.getElementById('embedTitle').value;
+            const description = document.getElementById('embedDescription').value;
+            const color = document.getElementById('embedColor').value;
+            const thumbnail = document.getElementById('embedThumbnail').value;
+            const image = document.getElementById('embedImage').value;
+            const footerText = document.getElementById('embedFooterText').value;
+            const footerIcon = document.getElementById('embedFooterIcon').value;
+            const authorName = document.getElementById('embedAuthorName').value;
+            const authorIcon = document.getElementById('embedAuthorIcon').value;
+
+            const fields = Array.from(document.querySelectorAll('.embed-field')).map(field => ({
+                name: field.querySelector('.embed-field-title').innerText,
+                value: field.querySelector('.embed-field-value').innerText
+            }));
+
+            const embed = {
+                title,
+                description,
+                color: parseInt(color.replace('#', ''), 16),
+                thumbnail: { url: thumbnail },
+                image: { url: image },
+                footer: {
+                    text: footerText,
+                    icon_url: footerIcon
+                },
+                author: {
+                    name: authorName,
+                    icon_url: authorIcon
+                },
+                fields
+            };
+
+            try {
+                const response = await fetch('/api/send-webhook', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ webhookUrl, embed })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Embed Sent Successfully!');
+                } else {
+                    alert('Failed to send embed.');
+                }
+            } catch (error) {
+                console.error('Error Sending Webhook:', error);
+                alert('an error occured.')
+
+            }
+        })
+    </script>
+</body>
+
+</html>

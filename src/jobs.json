@@ -1,0 +1,27 @@
+[
+    {
+      "name": "Software Developer",
+      "salary": 5000
+    },
+    {
+      "name": "Teacher",
+      "salary": 1000
+    },
+    {
+      "name": "Chef",
+      "salary": 2000
+    },
+    {
+      "name": "Janitor",
+      "salary": 100
+    },
+    {
+        "name": "Car Dealer",
+        "salary": 4000
+      },
+    {
+       "name": "Stripper",
+        "salary": 12500
+}
+  ]
+  

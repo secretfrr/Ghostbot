@@ -1,0 +1,245 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom right,
+    #2b5876, #4e4376);
+    color: white;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: rgba(0,0,0,0.3);
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-right p {
+    margin-right: 10px;
+}
+
+.button {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px 2px;
+    border: none;
+    border-radius: 5px;
+}
+
+#navbar-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.logout-button {
+    background-color: #f44336;
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 3);
+}
+
+header, footer {
+    padding: 10px;
+    text-align: center;
+}
+
+footer {
+    margin-top: 20px;
+}
+
+
+.server-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    overflow: hidden;
+    margin-top: 20px;
+    border: 1px red;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    height: 250px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+
+}
+
+.card .guild-banner {
+    height: 1px;
+    background-size: center;
+    background-position: center;
+    border-radius: 10px 10px 0 0;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.card .guild-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-bottom: -25px;
+    margin-top: -25px;
+    z-index: 2;
+}
+
+.card .card-content {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.card .edit-button {
+    background-color: #009CBA;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    align-self: center;
+    margin-top: auto;
+    z-index: 1;
+}
+
+.card .edit-button:hover {
+    background-color: #007bb5;
+}
+
+@media (max-width: 1200px) {
+    .server-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+   .server-list {
+    grid-template-columns: repeat(2, 1fr);
+   }
+
+   .navbar-right p {
+        display: none;
+   }
+
+   .navbar-right img {
+    width: 40px;
+    height: 40px;
+   }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar-left,
+    .navbar-right {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    
+    .server-list {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        height: auto;
+        padding: 15px;
+    }
+
+    .card .guild-banner {
+        height: 80px;
+    }
+
+    .card .guild-icon {
+        width: 40px;
+        height: 40px;
+        margin-bottom: -20px;
+        margin-top: -20px;
+    }
+
+    .card .edit-button {
+        padding: 0px 16px;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+}
+
+
+@media (max-width: 576px) {
+    body {
+        font-size: 14px;
+    }
+
+    .navbar {
+        padding: 5px 10px;
+    }
+
+    .button {
+         padding: 8px 16px;
+         font-size: 14px;
+    }
+
+    .container {
+        width: 90%;
+        padding: 10px;
+    }
+
+    header,
+    footer {
+        padding: 5px;
+    }
+
+    .card {
+        padding: 10px;
+    }
+
+    .card .edit-button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .card .card-content {
+        margin-top: 20px;
+    }
+}
