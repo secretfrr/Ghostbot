@@ -1,9 +1,4 @@
-<!--     ████████╗███████╗███████╗████████╗██╗███████╗██╗   ██╗
-         ╚══██╔══╝██╔════╝██╔════╝╚══██╔══╝██║██╔════╝╚██╗ ██╔╝
-            ██║   █████╗  ███████╗   ██║   ██║█████╗   ╚████╔╝ 
-            ██║   ██╔══╝  ╚════██║   ██║   ██║██╔══╝    ╚██╔╝  
-            ██║   ███████╗███████║   ██║   ██║██║        ██║   
-            ╚═╝   ╚══════╝╚══════╝   ╚═╝   ╚═╝╚═╝        ╚═╝    -->
+
 
 # Getting started -
 
@@ -15,12 +10,12 @@
 
 ## Issues -
 
-- If you have any issues whilst running the bot, join the [support server](https://discord.gg/dHZkSQBf3T) and create a ticket and **@kkermit**.
+- If you have any issues whilst running the bot, join the [support server](https://discord.gg/tYvw4RHC8w) and create a ticket.
 
-- Alternatively, you can add me as a friend on discord by clicking [here](https://discord.com/users/526853643962679323).
+- Alternatively, you can add me as a friend on discord by clicking [here](https://discord.com/users/375931932036431873).
 
 ### Support -
 
-- You can support me by staring the GitHub repo [here](https://github.com/Kkkermit/Testify) and then star. 
+- You can support me by staring the GitHub repo [here](https://github.com/secretfrr/Ghostbot) and then star. 
 
 ENJOY :)
